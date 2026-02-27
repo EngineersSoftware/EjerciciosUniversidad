@@ -1,0 +1,81 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "modelos" {
+    abstract class Empleado {
+        - documento : String
+        - nombre : String
+        - sueldoHora : double
+        - empresa : Empresa
+        + Empleado()
+        + Empleado(doc: String, nom: String, sueldo: double, emp: Empresa)
+        + getDocumento() : String
+        + setDocumento(doc: String) : void
+        + getNombre() : String
+        + getSueldoHora() : double
+        + getEmpresa() : Empresa
+        + setEmpresa(emp: Empresa) : void
+        + {abstract} toString() : String
+    }
+
+    class Desarrollador extends Empleado {
+        + Desarrollador(doc, nom, sueldo, emp)
+    }
+
+    class GestorProyectos extends Empleado {
+        - area : String
+        + GestorProyectos(doc, nom, sueldo, emp, area)
+        + getArea() : String
+        + setArea(area: String) : void
+    }
+
+    class Admin extends Empleado {
+        + Admin(doc, nom, sueldo, emp)
+    }
+
+    class Empresa {
+        - nit : String
+        - nombre : String
+        - direccion : String
+        - ciudad : String
+        + getNit() : String
+        + getNombre() : String
+        + setNombre(nom: String) : void
+    }
+
+    class EmpresaDesarrollo extends Empresa {
+        + EmpresaDesarrollo(nit, nom, ciudad)
+    }
+}
+
+package "operaciones" {
+    interface IOperacionEmpleado {
+        + {abstract} agregarEmpleado(e: Empleado) : void
+        + {abstract} listarTodos() : List<Empleado>
+        + {abstract} buscarPorDocumento(doc: String) : Empleado
+        + {abstract} calcularSueldo(e: Empleado, horas: int) : double
+    }
+
+    interface IOperacionEmpresa {
+        + {abstract} agregarEmpresa(e: Empresa) : void
+        + {abstract} listarEmpresas() : List<Empresa>
+        + {abstract} buscarPorNit(nit: String) : Empresa
+        + {abstract} contarEmpleados(nit: String, op: IOperacionEmpleado) : int
+    }
+
+    class OperacionEmpleado implements IOperacionEmpleado {
+        - empleados : List<Empleado>
+    }
+
+    class OperacionEmpresa implements IOperacionEmpresa {
+        - empresas : List<Empresa>
+    }
+}
+
+' Relaciones de asociación
+Empleado "1" --> "1" Empresa : trabaja en
+OperacionEmpleado ..> Empleado : gestiona
+OperacionEmpresa ..> Empresa : gestiona
+
+@enduml
