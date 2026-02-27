@@ -1,4 +1,4 @@
-@startuml
+@startuml Proyecto Universidad
 skinparam classAttributeIconSize 0
 skinparam packageStyle rectangle
 
@@ -73,9 +73,14 @@ package "operaciones" {
     }
 }
 
-' Relaciones de asociación
-Empleado "1" --> "1" Empresa : trabaja en
+
+' (Relación de Asociación 1 a 1 desde la perspectiva del Empleado)
+Empleado "1..*" --> "1" Empresa : trabaja en
+
+' 5. Dependencia (Uso de clases)
 OperacionEmpleado ..> Empleado : gestiona
 OperacionEmpresa ..> Empresa : gestiona
+
+
 
 @enduml
